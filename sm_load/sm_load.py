@@ -2,9 +2,7 @@ import os, glob
 import numpy as np
 import datetime
 
-
-def load(data_dir:str, i:int):
-    file_path = glob.glob(os.path.join(data_dir, str(i).zfill(3))+'*')[0]
+def _load_file(file_path:str):
     with open(file_path) as f:
         first_line = f.readline()
         meta_data = [str.strip() for str in first_line.split('\t')]
@@ -19,12 +17,32 @@ def load(data_dir:str, i:int):
             data_dict[key] = data[:, i-1]
     return data_dict
 
+def load(data_dir:str, i:int):
+    file_path = glob.glob(os.path.join(data_dir, str(i).zfill(3))+'*')[0]
+    data_dict = _load_file(file_path)
+    return data_dict
+
 
 def load2d(data_dir:str, ints:list):
+    '''
+    Loads all files specified in the ints list
+    If -1 is passed as the last element in the list, it will find all files with the
+    same trailing description as the first file number
+    '''
     data_dict = {}
-    for e, i in enumerate(ints):
-        data_i = load(data_dir, i)
-        if e == 0:
+    if ints[-1] == -1:
+        file_path = glob.glob(os.path.join(data_dir, str(ints[0]).zfill(3))+'*')[0]
+        split_fname = file_path.split(str(ints[0]).zfill(3))
+        files = glob.glob(os.path.join(data_dir,''+ '*' + split_fname[-1]))
+    else:
+        files = []
+        for i in ints:
+            files.append(glob.glob(os.path.join(data_dir, str(i).zfill(3))+'*')[0])
+
+
+    for i, file in enumerate(files):
+        data_i = _load_file(file)
+        if i == 0:
             for key, value in data_i.items():
                 data_dict[key] = np.array([value])
         else:
