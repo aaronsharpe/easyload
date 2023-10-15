@@ -40,7 +40,7 @@ def load2d(data_dir:str, ints:list):
             files.append(glob.glob(os.path.join(data_dir, str(i).zfill(3))+'*')[0])
 
 
-    for i, file in enumerate(files):
+    for i, file in enumerate(sorted(files)):
         data_i = _load_file(file)
         if i == 0:
             for key, value in data_i.items():
