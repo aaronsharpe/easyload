@@ -14,5 +14,35 @@ Installing python projects can be a real pain. Here is how I personally set up l
 6. Test measureme by following the basic usage section below!
 
 # Basic usage
-TODO: fill this out
-Load the thing
+
+Import sm_load, here we will just import the two main functions.
+
+```python
+from sm_load import load, load2d
+```
+
+To load a single file, we ignore all of the trailing stuff that you can add in special measure and simply use the identifying integer. 
+
+```python
+data = load('/path/to/data/directory', 1)
+```
+
+The returned data is in a dictionary. To quickly check all the fields in the data file:
+
+```python
+print(data.keys())
+```
+
+If we want to load many files at once (eg. a 2D measurement), there are two main ways. We can either specify a list of file indices via something like the following
+
+```python
+data = load2d('/path/to/data/directory', range(1, 10))
+```
+
+Or we can automatically load all files with the same trailing identifier as a specific file number by passing a list with -1 as the final element.
+
+```python
+data = load2d('/path/to/data/directory', [1, -1])
+```
+
+Either case will return a dictionary where each parameter is returned as a 2D matrix. In the case of an ongoing measurement, `load2d` will pad the files with zeros to match length of the first sweep. 
