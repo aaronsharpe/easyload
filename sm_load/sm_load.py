@@ -1,8 +1,10 @@
-import os, glob
+import os
+import glob
 import numpy as np
 import datetime
 
-def _load_file(file_path:str):
+
+def _load_file(file_path: str):
     with open(file_path) as f:
         first_line = f.readline()
         meta_data = [str.strip() for str in first_line.split('\t')]
@@ -17,13 +19,13 @@ def _load_file(file_path:str):
             data_dict[key] = data[:, i-1]
     return data_dict
 
-def load(data_dir:str, i:int):
+def load(data_dir: str, i: int):
     file_path = glob.glob(os.path.join(data_dir, str(i).zfill(3))+'*')[0]
     data_dict = _load_file(file_path)
     return data_dict
 
 
-def load2d(data_dir:str, ints:list):
+def load2d(data_dir: str, ints: list):
     '''
     Loads all files specified in the ints list
     If -1 is passed as the last element in the list, it will find all files with the
