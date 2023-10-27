@@ -19,6 +19,7 @@ def _load_file(file_path: str):
             data_dict[key] = data[:, i-1]
     return data_dict
 
+
 def load(data_dir: str, i: int):
     file_path = glob.glob(os.path.join(data_dir, str(i).zfill(3))+'*')[0]
     data_dict = _load_file(file_path)
