@@ -59,3 +59,12 @@ def load2d(data_dir: str, ints: list, pad_nan=True):
                     value_padded = np.pad(value, (0, np.shape(data_dict[key])[1] - len(value))) 
                 data_dict[key] = np.vstack((data_dict[key], value_padded))
     return data_dict
+
+def pady(data, len):
+    for key, value in data.items():
+        nan_array = np.empty((1, np.shape(value)[1]))
+        nan_array[:] = np.NAN
+        while np.shape(value)[0]<len:
+            value = np.vstack((value, nan_array))
+        data[key] = value
+    return data
