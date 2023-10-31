@@ -26,11 +26,13 @@ def load(data_dir: str, i: int):
     return data_dict
 
 
-def load2d(data_dir: str, ints: list):
+def load2d(data_dir: str, ints: list, pad_nan=True):
     '''
     Loads all files specified in the ints list
     If -1 is passed as the last element in the list, it will find all files with the
     same trailing description as the first file number
+    Default is to pad ongoing files with Nans
+    Setting the flag to false pads with zeros
     '''
     data_dict = {}
     if ints[-1] == -1:
@@ -50,5 +52,10 @@ def load2d(data_dir: str, ints: list):
                 data_dict[key] = np.array([value])
         else:
             for key, value in data_i.items():
-                data_dict[key] = np.vstack((data_dict[key], np.pad(value, (0, np.shape(data_dict[key])[1] - len(value)))))
+                if pad_nan:
+                    value_padded = np.pad(value, (0, np.shape(data_dict[key])[1] - len(value)), 
+                                      'constant', constant_values=(np.NAN, np.NAN))
+                else: 
+                    value_padded = np.pad(value, (0, np.shape(data_dict[key])[1] - len(value))) 
+                data_dict[key] = np.vstack((data_dict[key], value_padded))
     return data_dict
