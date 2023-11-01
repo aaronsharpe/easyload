@@ -36,9 +36,9 @@ def load2d(data_dir: str, ints: list, pad_nan=True):
     '''
     data_dict = {}
     if ints[-1] == -1:
-        file_path = glob.glob(os.path.join(data_dir, str(ints[0]).zfill(3))+'*')[0]
+        file_path = glob.glob(os.path.join(data_dir, f'{str(ints[0]).zfill(3)}*'))[0]
         split_fname = file_path.split(str(ints[0]).zfill(3))
-        files = glob.glob(os.path.join(data_dir,''+ '*' + split_fname[-1]))
+        files = glob.glob(os.path.join(data_dir, f'*{split_fname[-1]}'))
     else:
         files = []
         for i in ints:
