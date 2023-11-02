@@ -44,8 +44,8 @@ def load2d(data_dir: str, ints: list, pad_nan=True):
         for i in ints:
             files.append(glob.glob(os.path.join(data_dir, str(i).zfill(3))+'*')[0])
 
-
-    for i, file in enumerate(sorted(files)):
+    sorted_files = sorted(files, key=lambda s: int(s.split(os.path.join(data_dir, ''))[-1].split('_')[0]))
+    for i, file in enumerate(sorted_files):
         data_i = _load_file(file)
         if i == 0:
             for key, value in data_i.items():
